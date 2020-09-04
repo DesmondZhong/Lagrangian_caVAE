@@ -1,0 +1,3 @@
+[submodule "s-vae-pytorch"]
+	path = s-vae-pytorch
+	url = https://github.com/nicola-decao/s-vae-pytorch.git
