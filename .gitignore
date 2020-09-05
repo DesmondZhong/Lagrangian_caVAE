@@ -1,0 +1,6 @@
+__pychche__
+*.pyc
+.vscode/
+.python-version
+logs/
+datasets/
