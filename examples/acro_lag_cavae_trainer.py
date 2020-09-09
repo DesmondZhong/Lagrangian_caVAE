@@ -31,7 +31,7 @@ class Model(pl.LightningModule):
         super(Model, self).__init__()
         self.hparams = hparams
         self.data_path = data_path
-        self.T_pred = hparams.T_pred
+        self.T_pred = self.hparams.T_pred
         self.loss_fn = torch.nn.MSELoss(reduction='none')
 
         self.recog_net_1 = MLP_Encoder(64*64, 300, 3, nonlinearity='elu')

@@ -30,7 +30,7 @@ class Model(pl.LightningModule):
         super(Model, self).__init__()
         self.hparams = hparams
         self.data_path = data_path
-        self.T_pred = hparams.T_pred
+        self.T_pred = self.hparams.T_pred
         self.loss_fn = torch.nn.MSELoss(reduction='none')
 
         self.recog_q_net = MLP_Encoder(32*32, 300, 3, nonlinearity='elu')
@@ -108,8 +108,8 @@ class Model(pl.LightningModule):
 
         loss = - lhood + kl_q + 1/100 * norm_penalty
 
-        tensorboard_logs = {'recon_loss': -lhood, 'kl_q_loss': kl_q, 'train_loss': loss}
-        return {'loss':loss, 'log': tensorboard_logs}
+        logs = {'recon_loss': -lhood, 'kl_q_loss': kl_q, 'train_loss': loss}
+        return {'loss':loss, 'log': logs, 'progress_bar': logs}
 
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), self.hparams.learning_rate)
