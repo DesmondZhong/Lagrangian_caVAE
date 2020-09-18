@@ -40,8 +40,6 @@ class Model(pl.LightningModule):
 
     def train_dataloader(self):
         train_dataset = ImageDataset(self.data_path, self.hparams.T_pred)
-        # self.us = data['us']
-        # self.u = self.us[self.idx]
         self.t_eval = torch.from_numpy(train_dataset.t_eval)
         return DataLoader(train_dataset, batch_size=self.hparams.batch_size, shuffle=True, collate_fn=my_collate)
 
@@ -59,7 +57,6 @@ class Model(pl.LightningModule):
         return q_m, q_v, q_m_n
 
     def forward(self, X, u):
-        # self.q0_m, self.q1_m, self.q0_m_n, self.q1_m_n, self.q_q, self.p_q = self.enc(X[0:2])
         [_, bs, d, d] = X.shape
         T = len(self.t_eval)
         # encode
@@ -128,7 +125,7 @@ class Model(pl.LightningModule):
 
 
 def main(args):
-    model = Model(hparams=args, data_path=os.path.join(PARENT_DIR, 'datasets', 'pendulum-gym-image-dataset.pkl'))
+    model = Model(hparams=args, data_path=os.path.join(PARENT_DIR, 'datasets', 'pendulum-gym-image-dataset-train.pkl'))
     checkpoint_callback = ModelCheckpoint(monitor='loss', 
                                           prefix=args.name+f'-T_p={args.T_pred}-', 
                                           save_top_k=1, 

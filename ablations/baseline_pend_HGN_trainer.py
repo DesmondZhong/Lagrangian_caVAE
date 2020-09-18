@@ -16,7 +16,7 @@ seed_everything(0)
 
 
 def main(args):
-    model = Model(hparams=args, data_path=os.path.join(PARENT_DIR, 'datasets', 'pendulum-gym-image-dataset.pkl'))
+    model = Model(hparams=args, data_path=os.path.join(PARENT_DIR, 'datasets', 'pendulum-gym-image-dataset-train.pkl'))
     checkpoint_callback = ModelCheckpoint(monitor='loss', 
                                           prefix=args.name+f'-T_p={args.T_pred}-', 
                                           save_top_k=1, 
