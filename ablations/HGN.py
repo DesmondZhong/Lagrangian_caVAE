@@ -1,3 +1,18 @@
+"""
+This implementation of HGN is based on the original HGN paper,
+with the following exception.
+
+The original paper use symplectic integrator for better accuracy
+in long term prediction. However, our work focus on not only 
+prediction but control as well. With a applied controller, the 
+energy of the system is not conserved any more. Thus, we use RK4
+for integration. Since this is the integrator we use to generate
+our training data, we believe this is a fair choice. 
+
+We only use trajectories without any control to train 
+the HGN, since HGN does not model control. 
+
+"""
 # Standard library imports
 import os, sys
 from argparse import ArgumentParser

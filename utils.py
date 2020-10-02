@@ -18,8 +18,8 @@ def arrange_data(x, us, t, num_points=2):
     # assume x has shape 
     #    n_u, ts, bs, 3
     # or n_u, ts, bs, 32, 32
-    # or n_u, ts, bs, 3, 64, 
-    # output x_arranged has shape n_u, num_points, bs * (ts-num_points+1), ... 
+    # or n_u, ts, bs, 3, 64, 64 
+    # output x has shape n_u, num_points, bs * (ts-num_points+1), ... 
     assert num_points>=2 and num_points<=len(t)
     n_u, ts, bs = x.shape[0:3]
     x_list = []

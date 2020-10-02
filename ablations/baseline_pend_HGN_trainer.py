@@ -25,7 +25,8 @@ def main(args):
                                          deterministic=True,
                                          default_root_dir=os.path.join(PARENT_DIR, 'logs', args.name),
                                          checkpoint_callback=checkpoint_callback,
-                                         max_steps=15000) 
+                                         max_steps=15000,
+                                         max_epochs=2500) 
     trainer.fit(model)
 
 
