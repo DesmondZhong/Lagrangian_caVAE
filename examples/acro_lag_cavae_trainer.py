@@ -92,7 +92,7 @@ class Model(pl.LightningModule):
     def forward(self, X, u):
         [_, self.bs, c, self.d, self.d] = X.shape
         T = len(self.t_eval)
-        self.link1_l = F.sigmoid(self.link1_para)
+        self.link1_l = torch.sigmoid(self.link1_para)
         # encode
         self.phi1_m_t0, self.phi1_v_t0, self.phi1_m_n_t0, self.phi2_m_t0, self.phi2_v_t0, self.phi2_m_n_t0 = self.encode(X[0])
         self.phi1_m_t1, self.phi1_v_t1, self.phi1_m_n_t1, self.phi2_m_t1, self.phi2_v_t1, self.phi2_m_n_t1 = self.encode(X[1])

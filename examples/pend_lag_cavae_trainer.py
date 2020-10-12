@@ -56,12 +56,19 @@ class Model(pl.LightningModule):
         q_v = F.softplus(q_logv) + 1
         return q_m, q_v, q_m_n
 
+    def get_theta_inv(self, cos, sin, x, y, bs=None):
+        bs = self.bs if bs is None else bs
+        theta = torch.zeros([bs, 2, 3], dtype=self.dtype, device=self.device)
+        theta[:, 0, 0] += cos ; theta[:, 0, 1] += -sin ; theta[:, 0, 2] += - x * cos + y * sin
+        theta[:, 1, 0] += sin ; theta[:, 1, 1] += cos ;  theta[:, 1, 2] += - x * sin - y * cos
+        return theta
+        
     def forward(self, X, u):
-        [_, bs, d, d] = X.shape
+        [_, self.bs, d, d] = X.shape
         T = len(self.t_eval)
         # encode
-        self.q0_m, self.q0_v, self.q0_m_n = self.encode(X[0].reshape(bs, d*d))
-        self.q1_m, self.q1_v, self.q1_m_n = self.encode(X[1].reshape(bs, d*d))
+        self.q0_m, self.q0_v, self.q0_m_n = self.encode(X[0].reshape(self.bs, d*d))
+        self.q1_m, self.q1_v, self.q1_m_n = self.encode(X[1].reshape(self.bs, d*d))
 
         # reparametrize
         self.Q_q = VonMisesFisher(self.q0_m_n, self.q0_v) 
@@ -77,21 +84,17 @@ class Model(pl.LightningModule):
         z0_u = torch.cat((self.q0, self.q_dot0, u), dim=1)
         zT_u = odeint(self.ode, z0_u, self.t_eval, method=self.hparams.solver) # T, bs, 4
         self.qT, self.q_dotT, _ = zT_u.split([2, 1, 1], dim=-1)
-        self.qT = self.qT.view(T*bs, 2)
+        self.qT = self.qT.view(T*self.bs, 2)
 
         # decode
-        ones = torch.ones_like(self.qT)
-        self.content = self.obs_net(ones[:,0:1])
+        ones = torch.ones_like(self.qT[:, 0:1])
+        self.content = self.obs_net(ones)
 
-        theta = torch.zeros([T*bs, 2, 3], dtype=torch.float32, device=self.qT.device)
-        theta[:, 0, 0] = self.qT[:, 0]
-        theta[:, 0, 1] = - self.qT[:, 1]
-        theta[:, 1, 0] = self.qT[:, 1]
-        theta[:, 1, 1] = self.qT[:, 0]
+        theta = self.get_theta_inv(self.qT[:, 0], self.qT[:, 1], 0, 0, bs=T*self.bs) # cos , sin 
 
-        grid = F.affine_grid(theta, torch.Size((T*bs, 1, d, d)))
-        self.Xrec = F.grid_sample(self.content.view(T*bs, 1, d, d), grid)
-        self.Xrec = self.Xrec.view([T, bs, d, d])
+        grid = F.affine_grid(theta, torch.Size((T*self.bs, 1, d, d)))
+        self.Xrec = F.grid_sample(self.content.view(T*self.bs, 1, d, d), grid)
+        self.Xrec = self.Xrec.view([T, self.bs, d, d])
         return None
 
     def training_step(self, train_batch, batch_idx):
