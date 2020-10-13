@@ -160,7 +160,7 @@ class Model(pl.LightningModule):
         """
         # MODEL specific
         parser = ArgumentParser(parents=[parent_parser], add_help=False)
-        parser.add_argument('--learning_rate', default=1e-3, type=float)
+        parser.add_argument('--learning_rate', default=1e-4, type=float)
         parser.add_argument('--batch_size', default=1024, type=int)
 
         return parser
