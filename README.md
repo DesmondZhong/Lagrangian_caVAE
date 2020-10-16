@@ -7,7 +7,7 @@
 Yaofeng Desmond Zhong, Naomi Ehrich Leonard | 2020
 
 [![Paper](http://img.shields.io/badge/paper-arxiv.2007.01926-B31B1B.svg)](https://arxiv.org/abs/2007.01926)
-[![Conference](http://img.shields.io/badge/NeurIPS-2020-4b44ce.svg)]
+[![Conference](http://img.shields.io/badge/NeurIPS-2020-4b44ce.svg)](https://arxiv.org/abs/2007.01926)
 
 
 </div>
@@ -50,4 +50,5 @@ python examples/pend_lag_cavae_trainer.py --gpus 1
 ## Results
 
 ## Acknowledgement
-
+This research has been supported in part by ONR grant \#N00014-18-1-2873 and by the School of Engineering and Applied Science at Princeton University through the generosity of William Addy~’82.
+Yaofeng Desmond Zhong would like to thank Christine Allen-Blanchette, Shinkyu Park, Sushant Veer and Anirudha Majumdar for helpful discussions. 
