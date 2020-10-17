@@ -79,3 +79,19 @@ class ImageDataset(Dataset):
 
     def __len__(self):
         return self.u.shape[0]
+
+
+class SpecialImageDataset(Dataset):
+    def __init__(self, data_path, T_pred):
+        data = from_pickle(data_path)
+        self.x = [] ; self.u = []
+        for i in range(data['x'].shape[0]):
+            x, u, self.t_eval = arrange_data(data['x'][i:i+1], data['us'][i:i+1], data['t'], num_points=T_pred+1)
+            self.x.append(x) ; self.u.append(u)
+        self.u_idx = 0
+
+    def __getitem__(self, index):
+        return (self.x[self.u_idx][:, index], self.u[self.u_idx][index])
+
+    def __len__(self):
+        return self.u[self.u_idx].shape[0]
