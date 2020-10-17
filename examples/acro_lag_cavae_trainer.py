@@ -168,7 +168,7 @@ class Model(pl.LightningModule):
         norm_penalty = (self.phi1_m_t0.norm(dim=-1).mean() - 1) ** 2 + \
                        (self.phi2_m_t0.norm(dim=-1).mean() - 1) ** 2
 
-        loss = - lhood + kl_q + 1/100 * norm_penalty
+        loss = - lhood + kl_q + self.current_epoch/8000 * norm_penalty
 
         logs = {'recon_loss': -lhood, 'kl_q_loss': kl_q, 'train_loss': loss}
         return {'loss':loss, 'log': logs, 'progress_bar': logs}
