@@ -81,7 +81,7 @@ class ImageDataset(Dataset):
         return self.u.shape[0]
 
 
-class SpecialImageDataset(Dataset):
+class HomoImageDataset(Dataset):
     def __init__(self, data_path, T_pred):
         data = from_pickle(data_path)
         self.x = [] ; self.u = []

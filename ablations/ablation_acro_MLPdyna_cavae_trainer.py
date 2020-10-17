@@ -20,7 +20,7 @@ from lag_caVAE.lag import Lag_Net
 from lag_caVAE.nn_models import MLP_Encoder, MLP, MLP_Decoder, PSD, MatrixNet
 from hyperspherical_vae.distributions import VonMisesFisher
 from hyperspherical_vae.distributions import HypersphericalUniform
-from utils import arrange_data, from_pickle, my_collate, ImageDataset
+from utils import arrange_data, from_pickle, my_collate, ImageDataset, HomoImageDataset
 
 seed_everything(0)
 
@@ -48,12 +48,32 @@ class Model(pl.LightningModule):
 
         self.link1_para = torch.nn.Parameter(torch.tensor(0.0, dtype=self.dtype))
 
+        self.train_dataset = None
+        self.non_ctrl_ind = 1
+
     def train_dataloader(self):
-        train_dataset = ImageDataset(self.data_path, self.hparams.T_pred, ctrl=True)
-        # self.us = data['us']
-        # self.u = self.us[self.idx]
-        self.t_eval = torch.from_numpy(train_dataset.t_eval)
-        return DataLoader(train_dataset, batch_size=self.hparams.batch_size, shuffle=True, collate_fn=my_collate)
+        if self.hparams.homo_u:
+            # must set trainer flag reload_dataloaders_every_epoch=True
+            if self.train_dataset is None:
+                self.train_dataset = HomoImageDataset(self.data_path, self.hparams.T_pred)
+            if self.current_epoch < 1000:
+                # feed zero ctrl dataset and ctrl dataset in turns
+                if self.current_epoch % 2 == 0:
+                    u_idx = 0
+                else:
+                    u_idx = self.non_ctrl_ind
+                    self.non_ctrl_ind += 1
+                    if self.non_ctrl_ind == 9:
+                        self.non_ctrl_ind = 1
+            else:
+                u_idx = self.current_epoch % 9
+            self.train_dataset.u_idx = u_idx
+            self.t_eval = torch.from_numpy(self.train_dataset.t_eval)
+            return DataLoader(self.train_dataset, batch_size=self.hparams.batch_size, shuffle=True, collate_fn=my_collate)
+        else:
+            train_dataset = ImageDataset(self.data_path, self.hparams.T_pred, ctrl=True)
+            self.t_eval = torch.from_numpy(train_dataset.t_eval)
+            return DataLoader(train_dataset, batch_size=self.hparams.batch_size, shuffle=True, collate_fn=my_collate)
 
     def angle_vel_est(self, q0_m_n, q1_m_n, delta_t):
         delta_cos = q1_m_n[:,0:1] - q0_m_n[:,0:1]
@@ -190,6 +210,7 @@ if __name__ == '__main__':
     parser.add_argument('--name', default='ablation-acro-MLPdyna-cavae', type=str)
     parser.add_argument('--T_pred', default=4, type=int)
     parser.add_argument('--solver', default='euler', type=str)
+    parser.add_argument('--homo_u', dest='homo_u', action='store_true')
     # add args from trainer
     parser = Trainer.add_argparse_args(parser)
     # give the module a chance to add own params
