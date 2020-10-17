@@ -53,7 +53,7 @@ class Model(pl.LightningModule):
         if self.hparams.homo_u:
             # must set trainer flag reload_dataloaders_every_epoch=True
             if self.train_dataset is None:
-                self.train_dataset = SpecialImageDataset(self.data_path, self.hparams.T_pred)
+                self.train_dataset = HomoImageDataset(self.data_path, self.hparams.T_pred)
             if self.current_epoch < 1000:
                 # feed zero ctrl dataset and ctrl dataset in turns
                 if self.current_epoch % 2 == 0:
@@ -168,9 +168,10 @@ class Model(pl.LightningModule):
         norm_penalty = (self.phi1_m_t0.norm(dim=-1).mean() - 1) ** 2 + \
                        (self.phi2_m_t0.norm(dim=-1).mean() - 1) ** 2
 
-        loss = - lhood + kl_q + self.current_epoch/8000 * norm_penalty
+        lambda_ = self.current_epoch/8000 if self.hparams.annealing else 1/100
+        loss = - lhood + kl_q + lambda_ * norm_penalty
 
-        logs = {'recon_loss': -lhood, 'kl_q_loss': kl_q, 'train_loss': loss}
+        logs = {'recon_loss': -lhood, 'kl_q_loss': kl_q, 'train_loss': loss, 'monitor': -lhood+kl_q}
         return {'loss':loss, 'log': logs, 'progress_bar': logs}
 
     def configure_optimizers(self):
@@ -192,7 +193,7 @@ class Model(pl.LightningModule):
 def main(args):
     model = Model(hparams=args, data_path=os.path.join(PARENT_DIR, 'datasets', 'acrobot-gym-image-dataset-rgb-u9-train.pkl'))
 
-    checkpoint_callback = ModelCheckpoint(monitor='loss', 
+    checkpoint_callback = ModelCheckpoint(monitor='monitor', 
                                           prefix=args.name+f'-T_p={args.T_pred}-', 
                                           save_top_k=1, 
                                           save_last=True)
@@ -209,7 +210,8 @@ if __name__ == '__main__':
     parser.add_argument('--T_pred', default=4, type=int)
     parser.add_argument('--solver', default='euler', type=str)
     parser.add_argument('--homo_u', dest='homo_u', action='store_true')
-    parser.set_defaults(homo_u=False)
+    parser.add_argument('--annealing', dest='annealing', action='store_true')
+    parser.set_defaults(homo_u=False, annealing=False)
     # add args from trainer
     parser = Trainer.add_argparse_args(parser)
     # give the module a chance to add own params
