@@ -20,7 +20,7 @@ from lag_caVAE.lag import Lag_Net
 from lag_caVAE.nn_models import MLP_Encoder, MLP, MLP_Decoder, PSD, MatrixNet
 from hyperspherical_vae.distributions import VonMisesFisher
 from hyperspherical_vae.distributions import HypersphericalUniform
-from utils import arrange_data, from_pickle, my_collate, ImageDataset, SpecialImageDataset
+from utils import arrange_data, from_pickle, my_collate, ImageDataset, HomoImageDataset
 
 seed_everything(0)
 
