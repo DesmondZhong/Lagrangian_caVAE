@@ -71,8 +71,10 @@ class ImageDataset(Dataset):
         data = from_pickle(data_path)
         if ctrl:
             self.x, self.u, self.t_eval = arrange_data(data['x'], data['us'], data['t'], num_points=T_pred+1)
+            self.obs, _, _ = arrange_data(data['obs'], data['us'], data['t'], num_points=T_pred+1)
         else:
             self.x, self.u, self.t_eval = arrange_data(data['x'][0:1], data['us'][0:1], data['t'], num_points=T_pred+1)
+            self.obs, _, _ = arrange_data(data['obs'][0:1], data['us'][0:1], data['t'], num_points=T_pred+1)
 
     def __getitem__(self, index):
         return (self.x[:, index], self.u[index])
@@ -84,10 +86,11 @@ class ImageDataset(Dataset):
 class HomoImageDataset(Dataset):
     def __init__(self, data_path, T_pred):
         data = from_pickle(data_path)
-        self.x = [] ; self.u = []
+        self.x = [] ; self.u = [] ; self.obs = []
         for i in range(data['x'].shape[0]):
             x, u, self.t_eval = arrange_data(data['x'][i:i+1], data['us'][i:i+1], data['t'], num_points=T_pred+1)
-            self.x.append(x) ; self.u.append(u)
+            obs, _, _ = arrange_data(data['obs'][i:i+1], data['us'][i:i+1], data['t'], num_points=T_pred+1)
+            self.x.append(x) ; self.u.append(u) ; self.obs.append(obs)
         self.u_idx = 0
 
     def __getitem__(self, index):
