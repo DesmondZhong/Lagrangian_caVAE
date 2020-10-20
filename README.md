@@ -18,14 +18,14 @@ This repository is the official implementation of [Unsupervised Learning of Lagr
 
 This implementation is written with [PyTorch](https://pytorch.org/) and handles training with [PyTorch-Lightning](https://github.com/PyTorchLightning/pytorch-lightning), which makes our code easy to read and our results easy to reproduce. 
 
-Please install PyTorch according to the [official website](https://pytorch.org/get-started/locally/). To install all the other dependencies:
+Coming Soon: Please install PyTorch according to the [official website](https://pytorch.org/get-started/locally/). To install all the other dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
 ## Dataset
-
+Coming Soon
 
 ## Training
 
@@ -45,9 +45,10 @@ However, I successfully trained the pendulum example on GPU without error. Thank
 python examples/pend_lag_cavae_trainer.py --gpus 1
 ```
 ## Evaluation
-
+Coming Soon
 
 ## Results
+Coming Soon
 
 ## Acknowledgement
 This research has been supported in part by ONR grant \#N00014-18-1-2873 and by the School of Engineering and Applied Science at Princeton University through the generosity of William Addy~’82.
