@@ -4,3 +4,4 @@ __pychche__
 .python-version
 logs/
 datasets/
+.ipynb_checkpoints/

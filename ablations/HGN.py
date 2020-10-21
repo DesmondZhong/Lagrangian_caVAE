@@ -12,6 +12,9 @@ our training data, we believe this is a fair choice.
 We only use trajectories without any control to train 
 the HGN, since HGN does not model control. 
 
+This implementation is based on the following implementation of 
+Progressive GAN.
+https://github.com/odegeasslbc/Progressive-GAN-pytorch
 """
 # Standard library imports
 import os, sys

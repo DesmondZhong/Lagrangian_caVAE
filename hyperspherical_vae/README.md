@@ -1,0 +1,1 @@
+The code in this folder is from [Hyperspherical VAE](https://github.com/nicola-decao/s-vae-pytorch).
