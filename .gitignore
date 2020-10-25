@@ -5,3 +5,5 @@ __pychche__
 logs/
 datasets/
 .ipynb_checkpoints/
+checkpoints/
+figures/

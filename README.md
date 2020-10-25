@@ -12,20 +12,23 @@ Yaofeng Desmond Zhong, Naomi Ehrich Leonard | 2020
 
 </div>
  
-This repository is the official implementation of [Unsupervised Learning of Lagrangian Dynamics from Images for Prediction and Control](https://arxiv.org/abs/2007.01926). 
+![architecture](./figures/architecture.png)
+
+This repository is the official implementation of [Unsupervised Learning of Lagrangian Dynamics from Images for Prediction and Control](https://arxiv.org/abs/2007.01926). This implementation is refactored from the original implementation for readability, so the results won't be exactly the same as in the paper. 
 
 ## Requirements
 
 This implementation is written with [PyTorch](https://pytorch.org/) and handles training with [PyTorch-Lightning](https://github.com/PyTorchLightning/pytorch-lightning), which makes our code easy to read and our results easy to reproduce. 
 
-Coming Soon: Please install PyTorch according to the [official website](https://pytorch.org/get-started/locally/). To install all the other dependencies:
-
+Please install `torch` and `torchvision` according to the [official website](https://pytorch.org/get-started/locally/). To install all the other dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
 ## Dataset
-Coming Soon
+The data are hosted on Zenodo. [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4122270.svg)](https://doi.org/10.5281/zenodo.4122270)
+
+Please see ![the datasets folder](./datasets) for more details.
 
 ## Training
 
@@ -45,11 +48,20 @@ However, I successfully trained the pendulum example on GPU without error. Thank
 python examples/pend_lag_cavae_trainer.py --gpus 1
 ```
 ## Evaluation
-Coming Soon
+To analyze results, please check out the jupyter notebooks in ![the analysis folder](./analysis).
 
 ## Results
-Coming Soon
+### Prediction
 
+| Examples | True | **Lagrangian + caVAE** | MLPdyn + caVAE | Lagrangian + VAE | HGN
+| ---------|------|------------------------|----------------|------------------|-----|
+| Pendulum | <img src="./figures/true_pend_seq.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_pend_lag_cavae.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_pend_MLPdyna_cavae.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_pend_lag_vae.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_pend_HGN.gif" alt="drawing" width="50"/> |
+| CartPole | <img src="./figures/true_cart_seq.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_cart_lag_cavae.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_cart_MLPdyna_cavae.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_cart_lag_vae.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_cart_HGN.gif" alt="drawing" width="50"/> |
+
+### Control
+<img src="./figures/pend-ctrl.gif" alt="drawing" width="50"/>
+<img src="./figures/cart-ctrl.gif" alt="drawing" width="50"/>
+<img src="./figures/acro-ctrl.gif" alt="drawing" width="50"/>
 ## Acknowledgement
 This research has been supported in part by ONR grant \#N00014-18-1-2873 and by the School of Engineering and Applied Science at Princeton University through the generosity of William Addy ’82.
 Yaofeng Desmond Zhong would like to thank Christine Allen-Blanchette, Shinkyu Park, Sushant Veer and Anirudha Majumdar for helpful discussions. 
