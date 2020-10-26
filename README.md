@@ -14,7 +14,7 @@ Yaofeng Desmond Zhong, Naomi Ehrich Leonard | 2020
  
 ![architecture](./figures/architecture.png)
 
-This repository is the official implementation of [Unsupervised Learning of Lagrangian Dynamics from Images for Prediction and Control](https://arxiv.org/abs/2007.01926). This implementation is refactored from the original implementation for readability, so the results won't be exactly the same as in the paper. 
+This repository is the official implementation of [Unsupervised Learning of Lagrangian Dynamics from Images for Prediction and Control](https://arxiv.org/abs/2007.01926). This implementation is refactored from the original implementation for readability.
 
 ## Requirements
 
@@ -32,7 +32,7 @@ Please see ![the datasets folder](./datasets) for more details.
 
 ## Training
 
-To train the model, run this command:
+To train the model, run these commands:
 ```bash
 # to train the pendulum example
 python examples/pend_lag_cavae_trainer.py 
@@ -41,27 +41,38 @@ python examples/cart_lag_cavae_trainer.py
 # to train the fully-actuated acrobot example
 python examples/acro_lag_cavae_trainer.py 
 ```
-The commands above train the model on CPUs. Due to a [bug](https://github.com/pytorch/pytorch/issues/24823) in `torch.nn.functional.grid_sample`, you might encounter a segmentation fault if you train the model on GPUs. This bug has not been fixed in the latest PyTorch version (1.6.0) when this work is done. 
+The commands above train the model on CPUs. Due to a [bug](https://github.com/pytorch/pytorch/issues/24823) in `torch.nn.functional.grid_sample`, you might encounter a segmentation fault if you train the model on GPUs. This bug has not been fixed in the latest PyTorch version (1.6.0) when this work has been done. 
 
 However, I successfully trained the pendulum example on GPU without error. Thanks to PyTorch-Lightning, you can train it on GPU with 
 ```bash
 python examples/pend_lag_cavae_trainer.py --gpus 1
 ```
+
+For more details, please check out the ![the examples folder](./examples).
 ## Evaluation
 To analyze results, please check out the jupyter notebooks in ![the analysis folder](./analysis).
 
-## Results
-### Prediction
+## Pre-trained models
+Pre-trained models can be downloaded from github releases and should be put in ![the checkpoints folder](./checkpoints).
 
+## Results
+The following results can be reproduced by the notebooks in ![the analysis folder](./analysis).
+### Prediction
+Prediction up to 60 time steps. The models here are trained with T_pred=4.
 | Examples | True | **Lagrangian + caVAE** | MLPdyn + caVAE | Lagrangian + VAE | HGN
-| ---------|------|------------------------|----------------|------------------|-----|
+| ---------|:------:|:------------------------:|:----------------:|:------------------:|:-----:|
 | Pendulum | <img src="./figures/true_pend_seq.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_pend_lag_cavae.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_pend_MLPdyna_cavae.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_pend_lag_vae.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_pend_HGN.gif" alt="drawing" width="50"/> |
 | CartPole | <img src="./figures/true_cart_seq.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_cart_lag_cavae.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_cart_MLPdyna_cavae.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_cart_lag_vae.gif" alt="drawing" width="50"/> | <img src="./figures/prediction_cart_HGN.gif" alt="drawing" width="50"/> |
 
+Our model (Lagrangian + caVAE) generate realistic long term prediction.
 ### Control
-<img src="./figures/pend-ctrl.gif" alt="drawing" width="50"/>
-<img src="./figures/cart-ctrl.gif" alt="drawing" width="50"/>
-<img src="./figures/acro-ctrl.gif" alt="drawing" width="50"/>
+One image of each target position is given in each task. The target positions here are inverted positions of the systems.
+<img src="./figures/pend-ctrl.gif" alt="drawing" width="50"/> <img src="./figures/cart-ctrl.gif" alt="drawing" width="50"/> <img src="./figures/acro-ctrl.gif" alt="drawing" width="50"/>
+
+Energy-based controllers are able to conrol the pendulum, fully-actuated CartPole and fully-actuated Acrobot to the target position based on the learned dynamical and embedding (Lagrangian_caVAE) model.
+
 ## Acknowledgement
-This research has been supported in part by ONR grant \#N00014-18-1-2873 and by the School of Engineering and Applied Science at Princeton University through the generosity of William Addy ’82.
+This research has been supported in part by ONR grant #N00014-18-1-2873 and by the School of Engineering and Applied Science at Princeton University through the generosity of William Addy ’82.
 Yaofeng Desmond Zhong would like to thank Christine Allen-Blanchette, Shinkyu Park, Sushant Veer and Anirudha Majumdar for helpful discussions. 
+
+This implemention uses ![s-vae-pytorch](https://github.com/nicola-decao/s-vae-pytorch) by Nicola De Cao for modelling rotational coordiantes. 

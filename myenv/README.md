@@ -1,1 +1,1 @@
-The files in this folder is modified from [OpenAI Gym](https://github.com/openai/gym).
+The files in this folder are modified from [OpenAI Gym](https://github.com/openai/gym).

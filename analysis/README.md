@@ -17,3 +17,5 @@ Please note that the Acrobot is a chaotic system, which means it is not possible
 - `calculate_MSE_cart.ipynb`
 - `calculate_MSE_acro.ipynb`
 
+## Check the performance of PixelHNN
+- `analyze_pend_PixelHNN.ipynb`

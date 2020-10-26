@@ -2,10 +2,14 @@ Please download model checkpoints from github release and place them in this fol
 
 Here is a list of checkpoints.
 
+The following two checkpoints are trained with standard batch generation.
 - `pend-lag-cavae-T_p=4-epoch=701.ckpt`
 - `cart-lag-cavae-T_p=4-epoch=206.ckpt`
+
+The following checkpoint is trained with homogeneous control batch generation and annealing
 - `acro-lag-cavae-T_p=4-epoch=2801.ckpt`
 
+The following are checkpoints for ablation models and baseline models. 
 - `ablation-pend-MLPdyna-cavae-T_p=4-epoch=919.ckpt`
 - `ablation-pend-lag-vae-T_p=4-epoch=916.ckpt`
 - `ablation-pend-lag-caAE-T_p=4-epoch=778.ckpt`
