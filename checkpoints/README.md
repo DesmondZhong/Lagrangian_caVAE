@@ -1,4 +1,6 @@
-Please download model checkpoints from github release and place them in this folder.
+Pre-trained models can be downloaded from github releases (![Here's the link](https://github.com/DesmondZhong/Lagrangian_caVAE/releases/download/v0.0.1/pretrain_models.zip)). 
+
+Please unzip the downloaded file and put the checkpoints in ![the checkpoints folder](./checkpoints).
 
 Here is a list of checkpoints.
 

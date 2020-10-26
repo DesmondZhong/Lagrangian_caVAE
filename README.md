@@ -53,7 +53,9 @@ For more details, please check out the ![the examples folder](./examples).
 To analyze results, please check out the jupyter notebooks in ![the analysis folder](./analysis).
 
 ## Pre-trained models
-Pre-trained models can be downloaded from github releases and should be put in ![the checkpoints folder](./checkpoints).
+Pre-trained models can be downloaded from github releases (![Here's the link](https://github.com/DesmondZhong/Lagrangian_caVAE/releases/download/v0.0.1/pretrain_models.zip)). 
+
+Please unzip the downloaded file and put the checkpoints in ![the checkpoints folder](./checkpoints).
 
 ## Results
 The following results can be reproduced by the notebooks in ![the analysis folder](./analysis).
@@ -67,6 +69,7 @@ Prediction up to 60 time steps. The models here are trained with T_pred=4.
 Our model (Lagrangian + caVAE) generate realistic long term prediction.
 ### Control
 One image of each target position is given in each task. The target positions here are inverted positions of the systems.
+
 <img src="./figures/pend-ctrl.gif" alt="drawing" width="50"/> <img src="./figures/cart-ctrl.gif" alt="drawing" width="50"/> <img src="./figures/acro-ctrl.gif" alt="drawing" width="50"/>
 
 Energy-based controllers are able to conrol the pendulum, fully-actuated CartPole and fully-actuated Acrobot to the target position based on the learned dynamical and embedding (Lagrangian_caVAE) model.
