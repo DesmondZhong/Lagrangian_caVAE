@@ -20,7 +20,7 @@ This repository is the official implementation of [Unsupervised Learning of Lagr
 
 This implementation is written with [PyTorch](https://pytorch.org/) and handles training with [PyTorch-Lightning](https://github.com/PyTorchLightning/pytorch-lightning), which makes our code easy to read and our results easy to reproduce. 
 
-Please install `torch` and `torchvision` according to the [official website](https://pytorch.org/get-started/locally/). To install all the other dependencies:
+Please install `torch`(>=1.3.0) and `torchvision` according to the [official website](https://pytorch.org/get-started/locally/). To install all the other dependencies:
 ```bash
 pip install -r requirements.txt
 ```
@@ -56,6 +56,8 @@ To analyze results, please check out the jupyter notebooks in ![the analysis fol
 Pre-trained models can be downloaded from github releases (![Here's the link](https://github.com/DesmondZhong/Lagrangian_caVAE/releases/download/v0.0.1/pretrain_models.zip)). 
 
 Please unzip the downloaded file and put the checkpoints in ![the checkpoints folder](./checkpoints).
+
+Thanks to Pytorch-Lightning, after loading the checkpoints, you can check the training hyperparameters in the `hparams` property. For example, please check out the last cell in ![this notebook](./analysis/analyze_pend_lag_cavae.ipynb). 
 
 ## Results
 The following results can be reproduced by the notebooks in ![the analysis folder](./analysis).
