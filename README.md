@@ -7,7 +7,7 @@
 Yaofeng Desmond Zhong, Naomi Ehrich Leonard | 2020
 
 [![Conference](http://img.shields.io/badge/NeurIPS-2020-4b44ce.svg)](https://papers.nips.cc/paper/2020/hash/79f56e5e3e0e999b3c139f225838d41f-Abstract.html)
-[![Paper](http://img.shields.io/badge/paper-arxiv.2007.01926-B31B1B.svg)](https://arxiv.org/abs/2007.01926)
+[![Paper](http://img.shields.io/badge/arXiv-2007.01926-B31B1B.svg)](https://arxiv.org/abs/2007.01926)
 
 
 </div>
