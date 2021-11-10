@@ -55,7 +55,17 @@ class Lag_Net(torch.nn.Module):
                 for col_ind in range(self.q_dim):
                     dM = torch.autograd.grad(self.M_q[:, row_ind, col_ind].sum(), cos_q_sin_q, create_graph=True)[0]
                     dM_dt[:, row_ind, col_ind] = (dM * torch.cat((-sin_q * q_dot, cos_q * q_dot), dim=1)).sum(-1)
-            temp = -0.5 * torch.matmul(dM_dt, torch.unsqueeze(q_dot, 2)) - torch.unsqueeze(dV_dq, 2) + torch.matmul(self.g_net(cos_q_sin_q), torch.unsqueeze(u, 2))
+            q_dot_M_q_dot = torch.matmul(
+                torch.unsqueeze(q_dot, 1),
+                torch.matmul(self.M_q, torch.unsqueeze(q_dot, 2))
+            ) # (bs, 1, 1)
+            d_q_dot_M_q_dot = torch.autograd.grad(q_dot_M_q_dot.sum(), cos_q_sin_q, create_graph=True)[0]
+            d_q_dot_M_q_dot_dq = d_q_dot_M_q_dot[:, 0:self.q_dim] * (- sin_q) \
+                                + d_q_dot_M_q_dot[:, self.q_dim:2*self.q_dim] * cos_q
+            temp = - torch.matmul(dM_dt, q_dot[:, :, None]) \
+                    + 0.5 * d_q_dot_M_q_dot_dq[:, :, None] \
+                    - dV_dq[:, :, None] \
+                    + torch.matmul(self.g_net(cos_q_sin_q), u[:, :, None])
             d_q_dot = torch.squeeze(torch.matmul(torch.inverse(self.M_q), temp), 2)
 
         return torch.cat([d_cos_q, d_sin_q, d_q_dot, torch.zeros_like(u)], dim=1)
@@ -96,18 +106,30 @@ class Lag_Net_R1_T1(torch.nn.Module):
         r_cos_phi_sin_phi = torch.cat([r, cos_phi, sin_phi], dim=1)
 
         # d_r_dot d_q_dot is where Lagrangian plays a role
-        self.M = self.M_net(r_cos_phi_sin_phi)
-        self.V = self.V_net(r_cos_phi_sin_phi)
-        dV = torch.autograd.grad(self.V.sum(), r_cos_phi_sin_phi, create_graph=True)[0]
+        self.M_q = self.M_net(r_cos_phi_sin_phi)
+        self.V_q = self.V_net(r_cos_phi_sin_phi)
+        dV = torch.autograd.grad(self.V_q.sum(), r_cos_phi_sin_phi, create_graph=True)[0]
         dV_dr, dV_dcos_phi, dV_dsin_phi = dV.split([1, 1, 1], dim=1)
         dV_dphi = dV_dcos_phi * (- sin_phi) + dV_dsin_phi * cos_phi
-        dM_dt = torch.zeros_like(self.M)
+        dM_dt = torch.zeros_like(self.M_q)
         for row_ind in range(2):
             for col_ind in range(2):
-                dM = torch.autograd.grad(self.M[:, row_ind, col_ind].sum(), r_cos_phi_sin_phi, create_graph=True)[0]
+                dM = torch.autograd.grad(self.M_q[:, row_ind, col_ind].sum(), r_cos_phi_sin_phi, create_graph=True)[0]
                 dM_dt[:, row_ind, col_ind] = (dM * torch.cat([r_dot, -sin_phi*phi_dot, cos_phi*phi_dot], dim=1)).sum(-1)
-        temp = -0.5 * torch.matmul(dM_dt, torch.unsqueeze(torch.cat([r_dot, phi_dot], dim=1), dim=2))
-        temp += - torch.unsqueeze(torch.cat([dV_dr, dV_dphi], dim=1), dim=2)
-        temp += torch.matmul(self.g_net(r_cos_phi_sin_phi), torch.unsqueeze(u, dim=2))
-        dq_dot  = torch.squeeze(torch.matmul(torch.inverse(self.M), temp), dim=2)
+        q_dot = torch.cat([r_dot, phi_dot], dim=1)
+        q_dot_M_q_dot = torch.matmul(
+            q_dot[:, None, :],
+            torch.matmul(self.M_q, q_dot[:, :, None])
+        ) # (bs, 1, 1)
+        d_q_dot_M_q_dot = torch.autograd.grad(q_dot_M_q_dot.sum(), r_cos_phi_sin_phi, create_graph=True)[0]
+        d_q_dot_M_q_dot_dr, d_q_dot_M_q_dot_dcos_phi, d_q_dot_M_q_dot_dsin_phi = \
+            d_q_dot_M_q_dot.split([1, 1, 1], dim=1)
+        d_q_dot_M_q_dot_dphi = d_q_dot_M_q_dot_dcos_phi * (- sin_phi) + \
+                                d_q_dot_M_q_dot_dsin_phi * cos_phi
+        d_q_dot_M_q_dot_dq = torch.cat([d_q_dot_M_q_dot_dr, d_q_dot_M_q_dot_dphi], dim=1)
+        temp = - torch.matmul(dM_dt, q_dot[:, :, None]) \
+                + 0.5 * d_q_dot_M_q_dot_dq[:, :, None] \
+                - torch.cat([dV_dr, dV_dphi], dim=1)[:, :, None]\
+                + torch.matmul(self.g_net(r_cos_phi_sin_phi), u[:, :, None])
+        dq_dot  = torch.squeeze(torch.matmul(torch.inverse(self.M_q), temp), dim=2)
         return torch.cat([dr, dcos_phi, dsin_phi, dq_dot, torch.zeros_like(u)], dim=1)

@@ -1,10 +1,13 @@
-gym>=0.17.1
-imageio>=2.8.0
-jupyter>=1.0.0
-matplotlib>=3.2.0
-numpy>=1.18.1
-pytorch-lightning>=0.8.5
-scikit-image>=0.16.2
-scipy>=1.4.1
-tensorboard>=2.2.0
-torchdiffeq>=0.0.1
+numpy==1.18.1
+scipy==1.4.1
+matplotlib==3.2.0
+gym==0.17.1
+imageio==2.8.0
+jupyter==1.0.0
+torch==1.6.0 # CUDA 10.2
+torchvision==0.7.0
+pytorch-lightning==0.8.5
+scikit-image==0.16.2
+tensorboard==2.2.0
+torchdiffeq==0.0.1
+pyparsing==2.4.7

@@ -20,10 +20,11 @@ This repository is the official implementation of [Unsupervised Learning of Lagr
 
 This implementation is written with [PyTorch](https://pytorch.org/) and handles training with [PyTorch-Lightning](https://github.com/PyTorchLightning/pytorch-lightning), which makes our code easy to read and our results easy to reproduce. 
 
-Please install `torch`(>=1.3.0) and `torchvision` according to the [official website](https://pytorch.org/get-started/locally/). To install all the other dependencies:
+Please use `requirements.txt` to install required dependencies:
 ```bash
 pip install -r requirements.txt
 ```
+In case you encounter problems, we also provide a `requirements_freeze.txt` which contains the output by `pip freeze`.
 
 ## Dataset
 The data are hosted on Zenodo. [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4122270.svg)](https://doi.org/10.5281/zenodo.4122270)
