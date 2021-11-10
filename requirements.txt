@@ -11,3 +11,4 @@ scikit-image==0.16.2
 tensorboard==2.2.0
 torchdiffeq==0.0.1
 pyparsing==2.4.7
+pyvirtualdisplay==2.2
