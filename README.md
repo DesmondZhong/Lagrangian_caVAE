@@ -16,6 +16,9 @@ Yaofeng Desmond Zhong, Naomi Ehrich Leonard | 2020
 
 This repository is the official implementation of [Unsupervised Learning of Lagrangian Dynamics from Images for Prediction and Control](https://arxiv.org/abs/2007.01926). This implementation is refactored from the original implementation for readability.
 
+## Update
+In the 2020 NeurIPS Proceedings, there is an error in Equation (3), which is corrected in [this commit](https://github.com/DesmondZhong/Lagrangian_caVAE/commit/344398729fee806ced57c78ab05a3382ad7dd78d). The main results and conclusion of the paper are not affected. We thank Rembert Daems for spotting the error in Equation (3). The results shown on this page and the notebooks are updated based on training with the correct version of Equation (3). 
+
 ## Requirements
 
 This implementation is written with [PyTorch](https://pytorch.org/) and handles training with [PyTorch-Lightning](https://github.com/PyTorchLightning/pytorch-lightning), which makes our code easy to read and our results easy to reproduce. 
