@@ -19,6 +19,8 @@ This repository is the official implementation of [Unsupervised Learning of Lagr
 ## Update
 In the 2020 NeurIPS Proceedings, there is an error in Equation (3), which is corrected in [this commit](https://github.com/DesmondZhong/Lagrangian_caVAE/commit/344398729fee806ced57c78ab05a3382ad7dd78d). The main results and conclusion of the paper are not affected. We thank Rembert Daems for spotting the error in Equation (3). The results shown on this page and the notebooks are updated based on training with the correct version of Equation (3). 
 
+The updated pretrained models can be downloaded ![here](https://github.com/DesmondZhong/Lagrangian_caVAE/releases/download/v.0.0.2/updated_acro_cart_models.zip).
+
 ## Requirements
 
 This implementation is written with [PyTorch](https://pytorch.org/) and handles training with [PyTorch-Lightning](https://github.com/PyTorchLightning/pytorch-lightning), which makes our code easy to read and our results easy to reproduce. 
@@ -57,7 +59,7 @@ For more details, please check out the ![the examples folder](./examples).
 To analyze results, please check out the jupyter notebooks in ![the analysis folder](./analysis).
 
 ## Pre-trained models
-Pre-trained models can be downloaded from github releases (![Here's the link](https://github.com/DesmondZhong/Lagrangian_caVAE/releases/download/v0.0.1/pretrain_models.zip)). 
+Pre-trained models can be downloaded from github releases (![Here's the first file](https://github.com/DesmondZhong/Lagrangian_caVAE/releases/download/v0.0.1/pretrain_models.zip) and ![here are the two update models](https://github.com/DesmondZhong/Lagrangian_caVAE/releases/download/v.0.0.2/updated_acro_cart_models.zip))
 
 Please unzip the downloaded file and put the checkpoints in ![the checkpoints folder](./checkpoints).
 
