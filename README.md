@@ -59,7 +59,7 @@ For more details, please check out the ![the examples folder](./examples).
 To analyze results, please check out the jupyter notebooks in ![the analysis folder](./analysis).
 
 ## Pre-trained models
-Pre-trained models can be downloaded from github releases (![Here's the first file](https://github.com/DesmondZhong/Lagrangian_caVAE/releases/download/v0.0.1/pretrain_models.zip) and ![here are the two update models](https://github.com/DesmondZhong/Lagrangian_caVAE/releases/download/v.0.0.2/updated_acro_cart_models.zip))
+Pre-trained models can be downloaded from github releases (![Here's the file containing multiple models](https://github.com/DesmondZhong/Lagrangian_caVAE/releases/download/v0.0.1/pretrain_models.zip) and ![here are the two updated models](https://github.com/DesmondZhong/Lagrangian_caVAE/releases/download/v.0.0.2/updated_acro_cart_models.zip))
 
 Please unzip the downloaded file and put the checkpoints in ![the checkpoints folder](./checkpoints).
 
